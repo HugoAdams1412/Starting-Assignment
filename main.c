@@ -6,14 +6,20 @@
 
 #include<stdio.h>
 
-char r(char 'sentence[int i]')
+char r(int letter);
 
 int main() {
-    char sentence[100], newLetter; //the message can only have maximum of 100 characters
-    int i, rotations; //counter and value of rotation cipher respectively
+    char sentence[26]; //using entire alphabet as test string
+    int i = 0, result;
     
-    printf("Rotation Cipher: \n\n\n");
+    sentence[26] = ABCDEFGHIJKLMNOPQRSTUVWXYZ;
     
+    for(i = 0; i<26; i++)
+    {
+        sentence[i] = 'sentence[i]' - 65;
+        result = r(i);
+        printf("%c", result);
+    }
     
     //create string with ABCD...Z
     //shift each letter to zero and 25
@@ -22,27 +28,20 @@ int main() {
     
     
     
-    for(i = 0; sentence[i] != '\0'; i++) //keep loop going until runs into '\0' which stops the char array
+    /*for(i = 0; i <= 25; i++) //loop will continue until done 0-25 values i.e. entire alphabet
     {
-        newLetter = sentence[i]; //take each letter from message and assign it a new letter
+        newLetter = sentence[i]; //take each letter from message and assign it a new letter 
         
-        if(newLetter >= 'a' && newLetter <= 'z') 
-        {
-           newLetter = newLetter + rotations; 
-        }
-    }
-    
-    
-    
+    }*/
     
     return 0;
 }
 
-char r(char 'sentence[int i]')
+char r(int letter)
 {
-    
-    for (i = 0; i<=25; i++) 
-    {
-        ('sentence[i]' + 1) % 26
-    }
+    int result;
+    char sentence[26] = gay gay gay
+
+    result = (sentence[letter] + 1)%26;
+    return result;
 }
