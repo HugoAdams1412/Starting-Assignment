@@ -40,7 +40,7 @@ int main() {
 char r(int letter)
 {
     int result;
-    char sentence[26] = gay gay gay
+    char sentence[26] =
 
     result = (sentence[letter] + 1)%26;
     return result;
