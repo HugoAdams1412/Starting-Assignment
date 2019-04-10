@@ -1,47 +1,89 @@
-/*.....
- This Program will hopefully take a sentence input from the user
- and also a rotation value, then convert the input sentence
- into a encrypted version with a roation cipher......
- */
-
 #include<stdio.h>
+ 
+//int main()
+//{
+//    #include <stdio.h>
 
-char r(int letter);
-
-int main() {
-    char sentence[26]; //using entire alphabet as test string
-    int i = 0, result;
+int main()
+{
+    char string[100];
+    int i=0, key =1;
     
-    sentence[26] = ABCDEFGHIJKLMNOPQRSTUVWXYZ;
+   // printf("Input a Key: \n");
+    //scanf("%d", &key);
     
-    for(i = 0; i<26; i++)
+    printf("Input a Word: \n");
+    
+    while(i <100)
     {
-        sentence[i] = 'sentence[i]' - 65;
-        result = r(i);
-        printf("%c", result);
+    scanf("%c", string);
+    printf("%c ", string[0]);
+    
+    if(string[0] == 10 || string [0] == 13)
+    break;
+    
+    string[0] = string[0] - 65;
+    string[0] = (string[0] + key) % 26;
+    string[0] = string[0] + 65;
+    
+    printf("%c\n", string[0]);
+    i++;
     }
+    
+    
+    /*for(i = 0; string[i] != '\0'; i++){
+    
+    string[i] = string[i] - 65;
+    string[i] = (string[i] + key) % 26;
+    string[i] = string[i] + 65;
+    
+    }
+    
+    printf("%s\n", string);*/
+    
+        printf("blah");
+    return 0;
+}
+    
+    
+    
+//	char message[100], ch;
+//	int i, key;
+//	
+//	printf("Enter a message to encrypt: \n");
+//	scanf("%c", message);
+//	printf("Enter key: ");
+//	scanf("%d", &key);
+//	
+//	for(i = 0; message[i] != '\0'; ++i){
+//		ch = message[i];
+//		
+//		if(ch >= 'a' && ch <= 'z'){
+//			ch = ch + key;
+//			
+//			if(ch > 'z'){
+//				ch = ch - 'z' + 'a' - 1;
+//			}
+//			
+//			message[i] = ch;
+//		}
+//		else if(ch >= 'A' && ch <= 'Z'){
+//			ch = ch + key;
+//			
+//			if(ch > 'Z'){
+//				ch = ch - 'Z' + 'A' - 1;
+//			}
+//			
+//			message[i] = ch;
+//		}
+//	}
+//	
+//	printf("Encrypted message: %s", message);
+	
+//	return 0;
+//}
     
     //create string with ABCD...Z
     //shift each letter to zero and 25
     //pass each letter into the function "e(x)" returning 0 - 25
     
-    
-    
-    
-    /*for(i = 0; i <= 25; i++) //loop will continue until done 0-25 values i.e. entire alphabet
-    {
-        newLetter = sentence[i]; //take each letter from message and assign it a new letter 
-        
-    }*/
-    
-    return 0;
-}
-
-char r(int letter)
-{
-    int result;
-    char sentence[26] =
-
-    result = (sentence[letter] + 1)%26;
-    return result;
-}
