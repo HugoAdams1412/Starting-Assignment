@@ -1,36 +1,67 @@
+/*.......
+This program should take an input from the user
+as an array of characters, or a string, and rotate
+each letter to the right by a given amount, making
+the text that was inputted, encrypted so that it is 
+unreadable by someone without the key.
+
+Included as well is the decryption function which will 
+be able to turn an encrypted message with the caeser 
+cipher, back to readable text....
+.....
+*/
+
 #include <stdio.h>
 
 int main()
 {
-    char string[100];
-    int i = 0, key = 5;
     
-    printf("Input a Rotation: \n");
+    //declare key and string variables
+    int key = 0;
+    char plainText[101];
+    
+    
+    //Get key input from the user
+    printf("Input an integer for a key: \n");
     scanf("%d", &key);
-    getchar();
-    printf("Input a Sentence in Capitals: \n");
     
-    while(i < 100) {
-    scanf("%c", string);
+    //string counter
+    int i = 0;
     
-    if(string[0] == 10 || string [0] == 13)
-    break;
+    //open the text file
+    FILE *input;
+    input = fopen("input.txt", "r");
+  
     
-    if(string[0] == 32)
+    //Scan each character in string until end of string is reached
+    while(!feof(input))
     {
-       printf("%c", string[0]);
-        continue;
+        fscanf(input, "%c", plainText); //store in plainText array
     }
     
-    string[0] = string[0] - 65;
-    string[0] = (string[0] + key) % 26;
-    string[0] = string[0] + 65;
+    printf("The Sentence to be Encrypted: %s\n", plainText);
     
-    printf("%c", string[0]);
-    
-    i++;
+    //encrypt each letter one at a time
+    for(i = 0; plainText[i] != '\0'; i++)
+    {
+        if(plainText[i] == 32) //when there is a space, do not change
+        {
+            continue;
+        }
+        else if(plainText[i] == 10 || plainText[i] == 13) //when there is a tab or backspace, break loop
+        {
+            break;
+        }
+       else //otherwise, do the encryption
+       {
+            plainText[i] = ((plainText[i] - 64 + key) % 26) + 64;
+            printf("%c", plainText[i]);
+       }    
     }
     
     
-    return 0;
+    //print the string of encrypted text
+    printf("%s", plainText);
+   
 }
+
