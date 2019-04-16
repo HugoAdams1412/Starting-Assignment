@@ -91,7 +91,7 @@ int main()
     //re-initialising the string counter to 0
     i = 0;
     
-    //encrypt each letter one at a time
+    //decrypt each letter one at a time
     for(i = 0; i < strlen(plainText); i++)
     {
             //if character is a space, leave unchanged
@@ -99,15 +99,16 @@ int main()
             {
              printf("%c", plainText[i]);
             }
-            //otherwise, perform encryption       
+            //otherwise, perform decryption       
            else if (65 <= plainText[i] && 90 >= plainText[i])
             {
             plainText[i] = ((plainText[i] - 65 - key) % 26) + 65;
             printf("%c", plainText[i]);
             }
     } 
-    break;
+    break; // quit the ciphering program
         
+        //incase the user inputs an incorrect number, create an Error
         default:
         printf("Error, Please Try Again\n");
         break;
