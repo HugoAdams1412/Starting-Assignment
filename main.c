@@ -1,7 +1,7 @@
 /*.......
 This program should take an input from the user
 as an array of characters, or a string, and rotate
-each letter to the right by a given amount, making
+each letter to the right by a given amount (key), making
 the text that was inputted, encrypted so that it is 
 unreadable by someone without the key.
 
@@ -12,6 +12,7 @@ cipher, back to readable text....
 */
 
 #include <stdio.h>
+#include<string.h> //for strlen function
 
 int main()
 {
@@ -19,49 +20,101 @@ int main()
     //declare key and string variables
     int key = 0;
     char plainText[101];
-    
-    
-    //Get key input from the user
-    printf("Input an integer for a key: \n");
-    scanf("%d", &key);
-    
-    //string counter
-    int i = 0;
+    int arrayPosition = 0;
+    int selection = 0;
     
     //open the text file
     FILE *input;
     input = fopen("input.txt", "r");
-  
     
+   
+   printf("Enter 0 to Encrypt and 1 to decrypt: ");
+    scanf("%d", &selection);
+    
+    switch(selection){
+        
+        case 0: //performing encryption
+        
+        //Get key input from the user
+    printf("Input an integer for a Rotation key: \n");
+    scanf("%d", &key);
+  
     //Scan each character in string until end of string is reached
     while(!feof(input))
     {
-        fscanf(input, "%c", plainText); //store in plainText array
+        fscanf(input, "%c", &plainText[arrayPosition]); //store in plainText array
+        arrayPosition++;
     }
     
     printf("The Sentence to be Encrypted: %s\n", plainText);
     
+    fseek(input, SEEK_SET, SEEK_CUR);
+    
+    //initialising the string counter to 0
+    int i = 0;
+    
     //encrypt each letter one at a time
-    for(i = 0; plainText[i] != '\0'; i++)
+    for(i = 0; i < strlen(plainText); i++)
     {
-        if(plainText[i] == 32) //when there is a space, do not change
-        {
-            continue;
-        }
-        else if(plainText[i] == 10 || plainText[i] == 13) //when there is a tab or backspace, break loop
-        {
-            break;
-        }
-       else //otherwise, do the encryption
-       {
-            plainText[i] = ((plainText[i] - 64 + key) % 26) + 64;
+            //if character is a space, leave unchanged
+            if(plainText[i] < 65 || plainText[i] > 90)
+            {
+             printf("%c", plainText[i]);
+            }
+            //otherwise, perform encryption       
+           else if (65 <= plainText[i] && 90 >= plainText[i])
+            {
+            plainText[i] = ((plainText[i] - 65 + key) % 26) + 65;
             printf("%c", plainText[i]);
-       }    
+            }
+    } 
+    break;
+        
+        
+        case 1: //performing decryption
+        
+        //Get key input from the user
+    printf("Input an integer for a Rotation key: \n");
+    scanf("%d", &key);
+  
+    //Scan each character in string until end of string is reached
+    while(!feof(input))
+    {
+        fscanf(input, "%c", &plainText[arrayPosition]); //store in plainText array
+        arrayPosition++;
+    }
+    
+    printf("The Sentence to be Decrypted: %s\n", plainText);
+    
+    fseek(input, SEEK_SET, SEEK_CUR);
+    
+    //re-initialising the string counter to 0
+    i = 0;
+    
+    //encrypt each letter one at a time
+    for(i = 0; i < strlen(plainText); i++)
+    {
+            //if character is a space, leave unchanged
+            if(plainText[i] < 65 || plainText[i] > 90)
+            {
+             printf("%c", plainText[i]);
+            }
+            //otherwise, perform encryption       
+           else if (65 <= plainText[i] && 90 >= plainText[i])
+            {
+            plainText[i] = ((plainText[i] - 65 - key) % 26) + 65;
+            printf("%c", plainText[i]);
+            }
+    } 
+    break;
+        
+        default:
+        printf("Error, Please Try Again\n");
+        break;
     }
     
     
-    //print the string of encrypted text
-    printf("%s", plainText);
-   
+    
+   return 0;
 }
 
