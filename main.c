@@ -14,108 +14,140 @@ cipher, back to readable text....
 #include <stdio.h>
 #include<string.h> //for strlen function
 
+void rotationEncryption(char plainLetter, int key);
+void rotationDecryption(char plainLetter, int key);
+
 int main()
 {
     
-    //declare key and string variables
+    //declare key and letter variables
     int key = 0;
-    char plainText[101];
-    int arrayPosition = 0;
+    char plainLetter;
     int selection = 0;
     
     //open the text file
     FILE *input;
     input = fopen("input.txt", "r");
-    
    
-   printf("Enter 0 to Encrypt and 1 to decrypt: ");
+   //TITLE
+   printf("\nROTATION ENCRYPTION/DECRYPTION:\n\n");
+   
+   //user decides wheather to encrypt of decrypt
+    printf("\nPress 1 to Encrypt or 0 to Decrypt: ");
     scanf("%d", &selection);
     
-    switch(selection){
-        
-        case 0: //performing encryption
-        
-        //Get key input from the user
-    printf("Input an integer for a Rotation key: \n");
+    //getting input from the user about the amount of shift in letters
+    printf("\n\nInput an integer for the key: ");
     scanf("%d", &key);
-  
-    //Scan each character in string until end of string is reached
-    while(!feof(input))
+    
+    switch(selection)
     {
-        fscanf(input, "%c", &plainText[arrayPosition]); //store in plainText array
-        arrayPosition++;
-    }
+        
+        //if they want to encrypt
+        case 1:
     
-    printf("The Sentence to be Encrypted: %s\n", plainText);
-    
+    //ensuring the file is reading from beginning
     fseek(input, SEEK_SET, SEEK_CUR);
     
-    //initialising the string counter to 0
-    int i = 0;
-    
-    //encrypt each letter one at a time
-    for(i = 0; i < strlen(plainText); i++)
+    //read each character in the file and encrypt it one at a time
+    while(!feof(input))
     {
-            //if character is a space, leave unchanged
-            if(plainText[i] < 65 || plainText[i] > 90)
-            {
-             printf("%c", plainText[i]);
-            }
-            //otherwise, perform encryption       
-           else if (65 <= plainText[i] && 90 >= plainText[i])
-            {
-            plainText[i] = ((plainText[i] - 65 + key) % 26) + 65;
-            printf("%c", plainText[i]);
-            }
-    } 
+        //scan the letter into the plainLetter variable
+        fscanf(input, "%c", &plainLetter);
+        //call the encryption function
+        rotationEncryption(plainLetter, key); //NOTE: Function already prints the encrypted letter
+        //move to next position on file
+    }
     break;
-        
-        
-        case 1: //performing decryption
-        
-        //Get key input from the user
-    printf("Input an integer for a Rotation key: \n");
-    scanf("%d", &key);
-  
-    //Scan each character in string until end of string is reached
-    while(!feof(input))
-    {
-        fscanf(input, "%c", &plainText[arrayPosition]); //store in plainText array
-        arrayPosition++;
-    }
     
-    printf("The Sentence to be Decrypted: %s\n", plainText);
+     //if they want to decrypt
+     case 0:
     
+    //ensuring the file location is at the beginning
     fseek(input, SEEK_SET, SEEK_CUR);
     
-    //re-initialising the string counter to 0
-    i = 0;
     
-    //decrypt each letter one at a time
-    for(i = 0; i < strlen(plainText); i++)
+    //read each character in the file and decrypt it one at a time
+    while(!feof(input))
     {
-            //if character is a space, leave unchanged
-            if(plainText[i] < 65 || plainText[i] > 90)
-            {
-             printf("%c", plainText[i]);
-            }
-            //otherwise, perform decryption       
-           else if (65 <= plainText[i] && 90 >= plainText[i])
-            {
-            plainText[i] = ((plainText[i] - 65 - key) % 26) + 65;
-            printf("%c", plainText[i]);
-            }
-    } 
-    break; // quit the ciphering program
-        
-        //incase the user inputs an incorrect number, create an Error
-        default:
-        printf("Error, Please Try Again\n");
-        break;
+        //scan the letter into the plainLetter variable
+        fscanf(input, "%c", &plainLetter);
+        //call the decryption function
+        rotationDecryption(plainLetter, key); //NOTE: Function already prints the encrypted letter
+        //move to next position on file
     }
+     
+     break;
     
-    
+    //if accidentally presses anything else
+    default:
+    printf("Error, Please Try Again\n");
+    break;
+
+    }
+
     
    return 0;
+}
+
+//function defintion
+//returns no value, only prints letters, hence must have void return type
+void rotationEncryption(char plainLetter, int key)
+{
+            
+            //if character is not a capital letter, leave unchanged
+            if(plainLetter < 65 || plainLetter > 90)
+            {
+             printf("%c", plainLetter);
+            }
+            
+            //if character is a lower case, convert to upper case
+            else if(97 <= plainLetter && 122 >= plainLetter)
+            {
+                plainLetter = plainLetter - 32;
+            }
+            
+            //otherwise, perform encryption       
+           else if (65 <= plainLetter && 90 >= plainLetter)
+            {
+            plainLetter = ((plainLetter - 65 + key) % 26) + 65;
+            //print the letter
+            printf("%c", plainLetter);
+            }
+}
+
+//function defintion
+//returns no value, only prints letters, hence must have void return type
+void rotationDecryption(char plainLetter, int key)
+{
+            
+            //if character is not a capital letter, leave unchanged
+            if(plainLetter < 65 || plainLetter > 90)
+            {
+             printf("%c", plainLetter);
+            }
+            
+            //if character is a lower case, convert to upper case
+            else if(97 <= plainLetter && 122 >= plainLetter)
+            {
+                plainLetter = plainLetter - 32;
+            }
+            
+            //otherwise, perform decryption       
+           else if (65 <= plainLetter && 90 >= plainLetter)
+            {
+            plainLetter = (plainLetter - 65 - key);
+            
+            //plain letter may be negative because of '- key' so add 26
+            if(plainLetter < 0)
+            {
+                plainLetter += 26;
+            }
+            
+            plainLetter = (plainLetter % 26) + 65;
+    
+            //print the letter
+            printf("%c", plainLetter);
+            }
 }
 
