@@ -20,7 +20,7 @@ int main()
 {
     
     //declare key and letter variables
-    int key = 0;
+    int key = 63;
     char plainLetter;
     int selection1 = 0;
     int selection2 = 0;
@@ -75,15 +75,15 @@ int main()
      case 0:
     
     //ensuring the file location is at the beginning
-    fseek(input, SEEK_SET, SEEK_CUR);
+    fseek(input, 0 , SEEK_SET);
     
- /*   //if the key is not known, print every rotation
-    if(key = 63) //63 is the ascii value of a question mark
+    //if the key is not known, print every rotation
+    if(key == 63) //63 is the ascii value of a question mark
     {
         key = 1; //set the key to 1
-        for(key = 1; key <= 26; key++)
+        for(key = 1; key <= 26; key++) //this will print out 26 versions of the message
         {
-           while(!feof(input)) //this will print out 26 versions of the message
+           while(!feof(input)) 
            {
             fscanf(input, "%c", &plainLetter); //perform the decryption
             rotationDecryption(plainLetter, key);
@@ -94,8 +94,8 @@ int main()
         }
 
     }
-    */
-    
+    else
+    {
        //read each character in the file and decrypt it one at a time
        while(!feof(input))
        {
@@ -105,6 +105,10 @@ int main()
         rotationDecryption(plainLetter, key); //NOTE: Function already prints the encrypted letter
         //move to next position on file
        } 
+       
+    }
+    
+
 
         break;
 
