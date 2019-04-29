@@ -8,7 +8,6 @@ EXTERNAL .TXT FILE
 */
 
 #include <stdio.h>
-#include<string.h> //for strlen function
 
 void rotationEncryption(char plainLetter, int key);
 void rotationDecryption(char plainLetter, int key);
@@ -28,6 +27,13 @@ int main()
     //open the input text file with the plain / encrypted text
     FILE *input;
     input = fopen("input.txt", "r");
+    
+    if(input == NULL)
+    {
+     printf("Cannot open File");  
+     return 0;
+    }
+    
    
    //ask user if it is a rotation or substitution cipher
    printf("\nPress 0 for rotation cipher or 1 for substitution cipher: ");
@@ -47,8 +53,8 @@ int main()
     scanf("%d", &selection2);
     
     //getting input from the user about the amount of shift in letters
-    printf("\n\nInput an integer for the key.\nIf the key is not known, press '?': ");
-    scanf("%d", &key);
+    /*printf("\n\nInput an integer for the key.\nIf the key is not known, press '?': ");
+    scanf("%d", &key);*/
     
     
     switch(selection2)
@@ -56,12 +62,16 @@ int main()
         
         //if they want to encrypt
         case 1:
+        
+        //getting input about the key
+        printf("\n\nInput an integer for the key: ");
+        scanf("%d", &key);
     
     //ensuring the file is reading from beginning
-    fseek(input, SEEK_SET, SEEK_CUR);
+    fseek(input, 0 , SEEK_SET);
     
     //read each character in the file and encrypt it one at a time
-    while(!feof(input)) //this keeps the loop going until it has reached the end of the file
+    while(feof(input) == 0) //this keeps the loop going until it has reached the end of the file
     {
         //scan the letter into the plainLetter variable
         fscanf(input, "%c", &plainLetter);
@@ -73,6 +83,10 @@ int main()
     
      //if they want to decrypt
      case 0:
+     
+     //get input about the key and also if it is unknown
+     printf("Input an integer for the key,\nIf the key is unknown, press '?': ");
+     scanf("%d", &key);
     
     //ensuring the file location is at the beginning
     fseek(input, 0 , SEEK_SET);
@@ -83,7 +97,7 @@ int main()
         key = 1; //set the key to 1
         for(key = 1; key <= 26; key++) //this will print out 26 versions of the message
         {
-           while(!feof(input)) 
+           while(feof(input) == 0) 
            {
             fscanf(input, "%c", &plainLetter); //perform the decryption
             rotationDecryption(plainLetter, key);
@@ -97,7 +111,7 @@ int main()
     else
     {
        //read each character in the file and decrypt it one at a time
-       while(!feof(input))
+       while(feof(input) == 0)
        {
         //scan the letter into the plainLetter variable
         fscanf(input, "%c", &plainLetter);
@@ -134,12 +148,15 @@ int main()
     {    
     //if they choose to encrypt
     case 0:
+    //define a variable to keep track of location along file
+    int n = 0;
 
     //ensuring the file is reading from beginning
-    fseek(input, SEEK_SET, SEEK_CUR);
+    fseek(input, n , SEEK_SET);
+    //fseek(input, SEEK_SET, SEEK_CUR);
     
     //changing each letter in the file
-    while(!feof(input))
+    while(feof(input) == 0)
     {
         //read the letter
         fscanf(input, "%c", &plainLetter);
@@ -147,6 +164,7 @@ int main()
         substitutionEncryption(plainLetter);
         //print the encrypted letter to the console
         //NOTE: the encryption function already prints to the console
+        fseek(input, n++ , SEEK_SET); //increment the file location
     }
     
     break;
@@ -154,11 +172,14 @@ int main()
     //if they choose to decrypt
     case 1:
     
+    int n = 0;
+    
     //ensuring the file is reading from beginning
-    fseek(input, SEEK_SET, SEEK_CUR);
+    fseek(input, n , SEEK_SET);
+    //fseek(input, SEEK_SET, SEEK_CUR);
     
     //changing each letter in the file
-    while(!feof(input))
+    while(feof(input) == 0)
     {
         //read the letter
         fscanf(input, "%c", &plainLetter);
@@ -166,6 +187,7 @@ int main()
         substitutionDecryption(plainLetter);
         //print the decrypted letter to the console
         //NOTE: the decryption function already prints to the console
+        fseek(input, n++ , SEEK_SET);
     
     }
     break;
@@ -306,9 +328,16 @@ void substitutionEncryption(char plainLetter)
         plainLetter = plainLetter - 32;
     }
     
-     //open the input text file with the plain / encrypted text
+     //open the output text file to write to
     FILE *output;
-    output = fopen("output.txt", "");
+    output = fopen("output.txt", "w");
+    
+    if(output == NULL)
+    {
+      printf("File Cannot be Opened");
+      return 0;
+    }
+
     
     //hard code the alternative for each letter
     switch(plainLetter)
@@ -439,11 +468,11 @@ void substitutionDecryption(char plainLetter)
     
     switch(plainLetter)
     {
-      case 'A': plainLetter = 'M';
+      case 'M': plainLetter = 'A';
                 printf("%c", plainLetter);
                 fprintf(output, "%c", plainLetter);
         break;
-      case 'B': plainLetter = 'O';
+      case 'O': plainLetter = 'B';
                 printf("%c", plainLetter);
                 fprintf(output, "%c", plainLetter);
         break;
@@ -451,35 +480,15 @@ void substitutionDecryption(char plainLetter)
                 printf("%c", plainLetter);
                 fprintf(output, "%c", plainLetter);
         break;
-      case'D': plainLetter = 'N';
+      case'N': plainLetter = 'D';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'E': plainLetter = 'W';
+      case'W': plainLetter = 'E';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'F': plainLetter = 'D';
-               printf("%c", plainLetter);
-               fprintf(output, "%c", plainLetter);
-        break;
-      case'G': plainLetter = 'L';
-               printf("%c", plainLetter);
-               fprintf(output, "%c", plainLetter);
-        break;
-      case'H': plainLetter = 'A';
-               printf("%c", plainLetter);
-               fprintf(output, "%c", plainLetter);
-        break;
-      case'I': plainLetter = 'V';
-               printf("%c", plainLetter);
-               fprintf(output, "%c", plainLetter);
-        break;
-      case'J': plainLetter = 'B';
-               printf("%c", plainLetter);
-               fprintf(output, "%c", plainLetter);
-        break;
-      case'K': plainLetter = 'U';
+      case'D': plainLetter = 'F';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
@@ -487,59 +496,79 @@ void substitutionDecryption(char plainLetter)
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'M': plainLetter = 'P';
+      case'A': plainLetter = 'H';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'N': plainLetter = 'H';
+      case'V': plainLetter = 'I';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'O': plainLetter = 'E';
+      case'B': plainLetter = 'J';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'P': plainLetter = 'T';
+      case'U': plainLetter = 'K';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'Q': plainLetter = 'F';
+      case'G': plainLetter = 'L';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'R': plainLetter = 'Q';
+      case'P': plainLetter = 'M';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'S': plainLetter = 'I';
+      case'H': plainLetter = 'N';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'T': plainLetter = 'K';
+      case'E': plainLetter = 'O';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'U': plainLetter = 'X';
+      case'T': plainLetter = 'P';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'V': plainLetter = 'J';
+      case'F': plainLetter = 'Q';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'W': plainLetter = 'R';
+      case'Q': plainLetter = 'R';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'X': plainLetter = 'S';
+      case'I': plainLetter = 'S';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
-      case'Y': plainLetter = 'Z';
+      case'K': plainLetter = 'T';
+               printf("%c", plainLetter);
+               fprintf(output, "%c", plainLetter);
+        break;
+      case'X': plainLetter = 'U';
+               printf("%c", plainLetter);
+               fprintf(output, "%c", plainLetter);
+        break;
+      case'J': plainLetter = 'V';
+               printf("%c", plainLetter);
+               fprintf(output, "%c", plainLetter);
+        break;
+      case'R': plainLetter = 'W';
+               printf("%c", plainLetter);
+               fprintf(output, "%c", plainLetter);
+        break;
+      case'S': plainLetter = 'X';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
       case'Z': plainLetter = 'Y';
+               printf("%c", plainLetter);
+               fprintf(output, "%c", plainLetter);
+        break;
+      case'Y': plainLetter = 'Z';
                printf("%c", plainLetter);
                fprintf(output, "%c", plainLetter);
         break;
