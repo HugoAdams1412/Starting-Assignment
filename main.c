@@ -68,7 +68,7 @@ int main()
         scanf("%d", &key);
     
     //ensuring the file is reading from beginning
-    fseek(input, 0 , SEEK_SET);
+    //fseek(input, 0 , SEEK_SET);
     
     //read each character in the file and encrypt it one at a time
     while(feof(input) == 0) //this keeps the loop going until it has reached the end of the file
@@ -89,7 +89,7 @@ int main()
      scanf("%d", &key);
     
     //ensuring the file location is at the beginning
-    fseek(input, 0 , SEEK_SET);
+    //fseek(input, 0 , SEEK_SET);
     
     //if the key is not known, print every rotation
     if(key == 63) //63 is the ascii value of a question mark
@@ -121,8 +121,6 @@ int main()
        } 
        
     }
-    
-
 
         break;
 
@@ -149,10 +147,9 @@ int main()
     //if they choose to encrypt
     case 0:
     //define a variable to keep track of location along file
-    int n = 0;
 
     //ensuring the file is reading from beginning
-    fseek(input, n , SEEK_SET);
+    //fseek(input, 0 , SEEK_SET);
     //fseek(input, SEEK_SET, SEEK_CUR);
     
     //changing each letter in the file
@@ -164,7 +161,6 @@ int main()
         substitutionEncryption(plainLetter);
         //print the encrypted letter to the console
         //NOTE: the encryption function already prints to the console
-        fseek(input, n++ , SEEK_SET); //increment the file location
     }
     
     break;
@@ -172,10 +168,8 @@ int main()
     //if they choose to decrypt
     case 1:
     
-    int n = 0;
-    
     //ensuring the file is reading from beginning
-    fseek(input, n , SEEK_SET);
+    //fseek(input, 0 , SEEK_SET);
     //fseek(input, SEEK_SET, SEEK_CUR);
     
     //changing each letter in the file
@@ -187,7 +181,6 @@ int main()
         substitutionDecryption(plainLetter);
         //print the decrypted letter to the console
         //NOTE: the decryption function already prints to the console
-        fseek(input, n++ , SEEK_SET);
     
     }
     break;
@@ -335,7 +328,7 @@ void substitutionEncryption(char plainLetter)
     if(output == NULL)
     {
       printf("File Cannot be Opened");
-      return 0;
+      return;
     }
 
     
