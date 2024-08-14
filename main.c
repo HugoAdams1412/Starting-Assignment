@@ -47,6 +47,7 @@ int main()
    
    //TITLE
    printf("\nROTATION ENCRYPTION/DECRYPTION:\n\n");
+   printf("git branch test") // git branch test 2
    
    //user decides wheather to encrypt of decrypt
     printf("\nPress 1 to Encrypt or 0 to Decrypt: ");
